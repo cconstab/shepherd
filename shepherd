@@ -39,7 +39,7 @@ update_services() {
       image_with_digest="$(docker service inspect "$name" -f '{{.Spec.TaskTemplate.ContainerSpec.Image}}')"
       image=$(echo "$image_with_digest" | cut -d@ -f1)
 
-      if ! DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $insecure_registry_flag $image > /dev/null; then
+      if [[! DOCKER_CLI_EXPERIMENTAL=enabled ]]; then docker manifest inspect $insecure_registry_flag $image > /dev/null; then
         logger "Error updating service $name! Image $image does not exist or it is not available"
       else
         logger "Trying to update service $name with image $image" "true"
